@@ -1,349 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>svg</title>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="description" content="Hey, my name is svg. This is my personal website. Visit the website and get to know about me. You can connect with me for projects collaboration." />
-<meta name="keywords" content="svg, svg, portfolio, svg.codes, svg portfolio, svg website, svg website, svg portfolio" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png" />
-<link rel="apple-touch-icon" sizes="60x60" href="https://svg.codes/images/apple-icon-60x60.png" />
-<link rel="apple-touch-icon" sizes="72x72" href="https://svg.codes/images/apple-icon-72x72.png" />
-<link rel="apple-touch-icon" sizes="76x76" href="https://svg.codes/images/apple-icon-76x76.png" />
-<link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png" />
-<link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png" />
-<link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png" />
-<link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png" />
-<link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png" />
-<link rel="manifest" href="images/manifest.json" />
-<meta name="msapplication-TileColor" content="#ffffff" />
-<meta name="msapplication-TileImage" content="images/ms-icon-144x144.png" />
-<meta name="theme-color" content="#ffffff" />
-
-<link rel="stylesheet" rel="preload" as="style" href="css/style.min.css" type="text/css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Johanns GitHub Projects</title>
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #000000, #800080);
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+      overflow-x: hidden;
+      position: relative;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .search-container,
+    .filter-container {
+      display: flex;
+      justify-content: center;
+    }
+    input,
+    select {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      width: 300px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    input:focus,
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    #loading {
+      text-align: center;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .project-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover .project-image {
+      transform: scale(1.1);
+    }
+    .project-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .project-description {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1rem;
+    }
+    .project-links {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .project-link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .project-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+    /* Hide the inline README content since it’s now in the modal */
+    .readme-content {
+      display: none;
+    }
+    /* Modal Styles */
+    #readme-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: none;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #readme-modal.show {
+      display: block;
+      opacity: 1;
+    }
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      max-height: 90vh;
+      overflow-y: auto;
+      width: 80%;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #readme-modal.show .modal-content {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    /* Markdown styling override */
+    .markdown-body {
+      background: transparent !important;
+      color: #fff !important;
+    }
+    /* Back to Top Button */
+    #back-to-top {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    #back-to-top:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    /* White Moving Dots */
+    .moving-dots {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .moving-dots .dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: moveDots 8s linear infinite, trail 0.5s ease-out infinite;
+    }
+    @keyframes moveDots {
+      0% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(100vw, 100vh);
+        opacity: 0;
+      }
+    }
+    @keyframes trail {
+      0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+      100% {
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
+    /* Mouse Effects */
+    .mouse-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .mouse-effect .circle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
-<body class="dark">
-<svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<defs>
-<symbol id="icon-home" viewBox="0 0 32 32">
-<path d="M32 18.451l-16-12.42-16 12.42v-5.064l16-12.42 16 12.42zM28 18v12h-8v-8h-8v8h-8v-12l12-9z"></path>
-</symbol>
-<symbol id="icon-calendar" viewBox="0 0 32 32">
-<path d="M10 12h4v4h-4zM16 12h4v4h-4zM22 12h4v4h-4zM4 24h4v4h-4zM10 24h4v4h-4zM16 24h4v4h-4zM10 18h4v4h-4zM16 18h4v4h-4zM22 18h4v4h-4zM4 18h4v4h-4zM26 0v2h-4v-2h-14v2h-4v-2h-4v32h30v-32h-4zM28 30h-26v-22h26v22z"></path>
-</symbol>
-<symbol id="icon-bubbles2" viewBox="0 0 36 32">
-<path d="M15 0v0c8.284 0 15 5.435 15 12.139s-6.716 12.139-15 12.139c-0.796 0-1.576-0.051-2.339-0.147-3.222 3.209-6.943 3.785-10.661 3.869v-0.785c2.008-0.98 3.625-2.765 3.625-4.804 0-0.285-0.022-0.564-0.063-0.837-3.392-2.225-5.562-5.625-5.562-9.434 0-6.704 6.716-12.139 15-12.139zM31.125 27.209c0 1.748 1.135 3.278 2.875 4.118v0.673c-3.223-0.072-6.181-0.566-8.973-3.316-0.661 0.083-1.337 0.126-2.027 0.126-2.983 0-5.732-0.805-7.925-2.157 4.521-0.016 8.789-1.464 12.026-4.084 1.631-1.32 2.919-2.87 3.825-4.605 0.961-1.84 1.449-3.799 1.449-5.825 0-0.326-0.014-0.651-0.039-0.974 2.268 1.873 3.664 4.426 3.664 7.24 0 3.265-1.88 6.179-4.82 8.086-0.036 0.234-0.055 0.474-0.055 0.718z"></path>
-</symbol>
- <symbol id="icon-user" viewBox="0 0 32 32">
-<path d="M18 22.082v-1.649c2.203-1.241 4-4.337 4-7.432 0-4.971 0-9-6-9s-6 4.029-6 9c0 3.096 1.797 6.191 4 7.432v1.649c-6.784 0.555-12 3.888-12 7.918h28c0-4.030-5.216-7.364-12-7.918z"></path>
-</symbol>
-<symbol id="icon-github" viewBox="0 0 32 32">
-<path d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
-</symbol>
-</defs>
-</svg>
+<body>
+  <!-- The white moving dots will be added via JavaScript -->
+  <header>
+    <h1>Johanns GitHub Projects</h1>
+  </header>
+  <div class="controls">
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Search projects..." />
+    </div>
+    <div class="filter-container">
+      <select id="language-filter">
+        <option value="">All Languages</option>
+      </select>
+    </div>
+  </div>
+  <div id="loading">
+    <div class="spinner"></div>
+    Loading projects...
+  </div>
+  <div id="projects-grid" class="projects-grid"></div>
+  <button id="back-to-top">↑</button>
 
-<div class="preloader">
-<div class="loader"></div>
-</div>
+  <!-- Fullscreen Modal for README -->
+  <div id="readme-modal">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <div class="modal-readme markdown-body"></div>
+    </div>
+  </div>
 
+  <footer>
+    &copy; 2025 My GitHub Projects
+  </footer>
 
-<div class="main-container">
+  <div class="mouse-effect"></div>
 
-<div class="aside">
+  <script>
+    const username = 'svg-rs'; // Change this to your GitHub username
+    const apiUrl = `https://api.github.com/users/${username}/repos`; // Fetch all repositories
+    const projectsGrid = document.getElementById('projects-grid');
+    const searchInput = document.getElementById('search');
+    const languageFilter = document.getElementById('language-filter');
+    const loadingDiv = document.getElementById('loading');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const mouseEffect = document.querySelector('.mouse-effect');
+    let projectsData = [];
 
-<div class="logo">
-<a href="index.html#home"><p class="logo-text">svg</p></a>
-</div>
+    // Fetch GitHub projects
+    async function fetchProjects() {
+      try {
+        const response = await fetch(apiUrl);
+        const projects = await response.json();
+        // Filter out forked projects
+        projectsData = projects.filter(project => !project.fork);
+        loadingDiv.style.display = 'none';
+        populateLanguageFilter(projectsData);
+        updateDisplay();
+        searchInput.addEventListener('input', updateDisplay);
+        languageFilter.addEventListener('change', updateDisplay);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        loadingDiv.innerHTML = 'Failed to load projects. Please try again later.';
+      }
+    }
 
-<div class="nav-toggler">
-<span></span>
-</div>
+    // Populate language filter dropdown with unique languages
+    function populateLanguageFilter(projects) {
+      const languages = new Set();
+      projects.forEach(project => {
+        if (project.language) {
+          languages.add(project.language);
+        }
+      });
+      languages.forEach(lang => {
+        const option = document.createElement('option');
+        option.value = lang;
+        option.textContent = lang;
+        languageFilter.appendChild(option);
+      });
+    }
 
-<ul class="nav">
-<li>
-<a href="index.html#home" class="active"><svg class="icon icon-home">
-<use xlink:href="#icon-home"></use>
-</svg>
-Home</a
-            >
-</li>
-<li>
-<a href="index.html#about"><svg class="icon icon-user">
-<use xlink:href="#icon-user"></use>
-</svg>
-About</a
-            >
-</li>
-<li>
-<a href="index.html#contact"><svg class="icon icon-bubbles2">
-<use xlink:href="#icon-bubbles2"></use>
-</svg>
-Contact</a
-            >
-</li>
-</ul>
+    // Update display of projects based on search & language filter
+    function updateDisplay() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedLanguage = languageFilter.value;
+      let filteredProjects = projectsData;
+      if (selectedLanguage) {
+        filteredProjects = filteredProjects.filter(proj =>
+          (proj.language || "").toLowerCase() === selectedLanguage.toLowerCase()
+        );
+      }
+      if (searchTerm) {
+        filteredProjects = filteredProjects.filter(proj =>
+          proj.name.toLowerCase().includes(searchTerm) ||
+          (proj.description && proj.description.toLowerCase().includes(searchTerm))
+        );
+      }
+      displayProjects(filteredProjects);
+    }
 
-<div class="copyright-text">&copy; 2022 svg</div>
-</div>
+    // Display projects in cards and attach events for README fetching
+    function displayProjects(projects) {
+      projectsGrid.innerHTML = projects.map(project => {
+        return `
+          <div class="project-card" data-repo-fullname="${project.full_name}">
+            <img src="https://opengraph.githubassets.com/1/${project.full_name}" alt="${project.name}" class="project-image" />
+            <h3 class="project-title">${project.name}</h3>
+            <p class="project-description">${project.description || 'No description available.'}</p>
+            <div class="project-links">
+              <a href="${project.html_url}" target="_blank" class="project-link">View on GitHub</a>
+              ${project.homepage ? `<a href="${project.homepage}" target="_blank" class="project-link">View Demo</a>` : ''}
+            </div>
+            <div class="readme-content markdown-body"></div>
+          </div>
+        `;
+      }).join('');
 
+      const cards = document.querySelectorAll('.project-card');
+      attachCardEvents(cards);
+    }
 
-<div class="main-content">
+    // Attach event listeners for each card
+    function attachCardEvents(cards) {
+      cards.forEach(card => {
+        card.addEventListener('click', function(e) {
+          // Do not open modal if clicking on a link
+          if (e.target.closest('.project-link')) return;
+          openReadmeModal(card);
+        });
+        card.addEventListener('mouseenter', function() {
+          prefetchReadme(card);
+        });
+      });
+    }
 
-<section class="home section active" id="home">
-<div class="container">
-<div class="intro">
-<div id="profile">
-<img id="avatar" alt="svg" class="shadow-dark" src="https://cdn.discordapp.com/attachments/1037197142755917845/1037200669108604928/svg.png"/>
-<h1 id="username">svg#0002</h1>
-<p>Backend Developer</p>
-<div class="social-links">
-<a href="https://github.com/svg-rs" target="_blank"><svg class="icon icon-github">
-<use xlink:href="#icon-github"></use></svg></a>
-</div>
-<iframe id="discord-presence" style="
-                    border: none;
-                    overflow: hidden;
-                    border-radius: 10px;
-                    margin: 10px;
-                  " width="50%" height="144px"></iframe>
-</div>
-</div>
-</div>
-</section>
+    // Open the README modal with content from the card
+    function openReadmeModal(card) {
+      const readmeDiv = card.querySelector('.readme-content');
+      const modalReadmeDiv = document.querySelector('#readme-modal .modal-readme');
+      // If README content isn’t ready, show a loading message
+      if (!readmeDiv.innerHTML.trim()) {
+        readmeDiv.innerHTML = '<p>Loading README...</p>';
+        prefetchReadme(card, true).then(() => {
+          modalReadmeDiv.innerHTML = readmeDiv.innerHTML;
+          document.getElementById('readme-modal').classList.add('show');
+        });
+      } else {
+        modalReadmeDiv.innerHTML = readmeDiv.innerHTML;
+        document.getElementById('readme-modal').classList.add('show');
+      }
+    }
 
+    // Prefetch README content for a repository if not already fetched
+    async function prefetchReadme(card, forceFetch = false) {
+      if (card.dataset.readmeFetched === "true" && !forceFetch) return;
+      const repoFullName = card.dataset.repoFullname;
+      try {
+        const response = await fetch(`https://api.github.com/repos/${repoFullName}/readme`);
+        if (!response.ok) {
+          throw new Error("README not found");
+        }
+        const data = await response.json();
+        let readmeText = "";
+        if (data && data.content) {
+          readmeText = atob(data.content);
+        }
+        card.querySelector('.readme-content').innerHTML = marked.parse(readmeText);
+        card.dataset.readmeFetched = "true";
+        console.log(`Fetched README for ${repoFullName}`);
+      } catch (err) {
+        card.querySelector('.readme-content').innerText = "No README available.";
+        card.dataset.readmeFetched = "true";
+        console.error(`Error fetching README for ${repoFullName}:`, err);
+      }
+    }
 
-<section class="about section" id="about">
-<div class="container">
-<div class="row">
-<div class="section-title padd-15">
-<h2>About Me</h2>
-</div>
-</div>
-<div class="row">
-<div class="about-content padd-15">
- 
-<div class="row">
-<div class="about-text padd-15">
-<h3>I'm <span>svg</span></h3>
-<p>
-I started programming at a young age and I am improving
-myself every day.
-</p>
-</div>
-</div>
+    // Back to Top Button
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-<div class="row">
-<div class="personal-info padd-15">
-<div class="row">
-<div class="info-item padd-15">
-<p>Website : <span>www.svg.is-a.dev</span></p>
-</div>
-<div class="info-item padd-15">
-<p>Email : <span>kimmkayy8@proton.me</span></p>
-</div>
-<div class="info-item padd-15">
-<p>Freelance : <span>Available </span></p>
-</div>
-</div>
-<div class="row">
-<div class="buttons padd-15">
-<a href="index.html#contact" data-section-index="1" class="btn hire-me">Hire Me</a
-                        >
-</div>
-</div>
-</div>
-<div class="skills padd-15">
-<div class="row">
-<div class="skill-item padd-15">
-<h5>Rust</h5>
-<div class="progress">
-<div class="progress-in" style="width: 100%"></div>
-<div class="skill-percent">100%</div>
-</div>
-</div>
-<div class="skill-item padd-15">
-<h5>HTML & CSS</h5>
-<div class="progress">
-<div class="progress-in" style="width: 90%"></div>
-<div class="skill-percent">90%</div>
-</div>
-</div>
-<div class="skill-item padd-15">
-<h5>C#</h5>
-<div class="progress">
-<div class="progress-in" style="width: 90%"></div>
-<div class="skill-percent">90%</div>
-</div>
-</div>
-<div class="skill-item padd-15">
-<h5>Java</h5>
-<div class="progress">
-<div class="progress-in" style="width: 50%"></div>
-<div class="skill-percent">50%</div>
-</div>
-</div>
-<div class="skill-item padd-15">
-<h5>Python</h5>
-<div class="progress">
-<div class="progress-in" style="width: 30%"></div>
-<div class="skill-percent">30%</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    // Modal close events
+    document.querySelector('#readme-modal .close-modal').addEventListener('click', () => {
+      document.getElementById('readme-modal').classList.remove('show');
+    });
+    // Close modal when clicking on the overlay outside modal content
+    document.getElementById('readme-modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('readme-modal')) {
+        document.getElementById('readme-modal').classList.remove('show');
+      }
+    });
 
-<div class="row">
-<div class="education padd-15">
-<h3 class="title">Education</h3>
-<div class="row">
-<div class="timeline-box padd-15">
-<div class="timeline shadow-dark">
-
-<div class="timeline-item">
-<div class="circle-dot"></div>
-<h6 class="timeline-date">
-<svg class="icon icon-calendar">
-<use xlink:href="#icon-calendar"></use>
-</svg>
- 2019 - 2022
-</h6>
-<h4 class="timeline-title">High School</h4>
-<p class="timeline-text">
-I am studying at High School currently.
-</p>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-<div class="experience padd-15">
-<h3 class="title">Experience & Internship</h3>
-<div class="row">
-<div class="timeline-box padd-15">
-<div class="timeline shadow-dark">
-
-<div class="timeline-item">
-<div class="circle-dot"></div>
-<h6 class="timeline-date">
-<svg class="icon icon-calendar">
-<use xlink:href="#icon-calendar"></use>
-</svg>
-2022
-</h6>
-<h4 class="timeline-title">Rust Dropper</h4>
-<p class="timeline-text">
-A rust file dropper
-</p>
-</div>
-
-
-<div class="timeline-item">
-<div class="circle-dot"></div>
-<h6 class="timeline-date">
-<svg class="icon icon-calendar">
-<use xlink:href="#icon-calendar"></use>
-</svg>
-Feb 2020 - Unactive Development
-</h6>
-<h4 class="timeline-title">Omeglecord</h4>
-<p class="timeline-text">
-Omeglecord had reached 300+ servers. After the
-sanctions imposed by Discord, I did not continue
-any further.
-</p>
-</div>
+    // Create white moving dots in the background
+    function createMovingDots(num) {
+      const container = document.createElement('div');
+      container.classList.add('moving-dots');
+      for (let i = 0; i < num; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        // Randomize starting position and animation delay
+        const randomX = Math.random() * 100;
+        const randomY = Math.random() * 100;
+        const delay = Math.random() * 8;
+        dot.style.left = `${randomX}vw`;
+        dot.style.top = `${randomY}vh`;
+        dot.style.animationDelay = `${delay}s`;
+        container.appendChild(dot);
+      }
+      document.body.appendChild(container);
+    }
+    createMovingDots(50);
 
 
-<div class="timeline-item">
-<div class="circle-dot"></div>
-<h6 class="timeline-date">
-<svg class="icon icon-calendar">
-<use xlink:href="#icon-calendar"></use>
-</svg>
-July 2021 - Active Development
-</h6>
-<h4 class="timeline-title">haxball.js</h4>
-<p class="timeline-text">
-I coded a native Haxball Headless API for NodeJS.
-</p>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-</section>
-
-
-<section class="contact section" id="contact">
-<div class="container">
-<div class="row">
-<div class="section-title padd-15">
-<h2>Contact Me</h2>
-</div>
-</div>
-
-<div class="row">
-<form action="https://formspree.io/f/mzbyjapy" class="contact-form padd-15" method="POST">
-<div class="row">
-<div class="form-item col-6 padd-15">
-<div class="form-group">
-<input type="text" class="form-control" placeholder="Name*" name="name" required />
-</div>
-</div>
-<div class="form-item col-6 padd-15">
-<div class="form-group">
-<input type="text" class="form-control" placeholder="Email*" name="email" required />
-</div>
-</div>
-</div>
-<div class="row">
-<div class="form-item col-12 padd-15">
-<div class="form-group">
-<input type="text" class="form-control" placeholder="Subject*" name="subject" required />
-</div>
-</div>
-</div>
-<div class="row">
-<div class="form-item col-12 padd-15">
-<div class="form-group">
-<textarea class="form-control" placeholder="Your Message..." name="message" required></textarea>
-</div>
-</div>
-</div>
-<div class="row">
-<div class="col-12 padd-15">
-<button type="submit" class="btn">Send Message</button>
-</div>
-</div>
-</form>
-</div>
-
-</div>
-</section>
-
-</div>
-
-</div>
-
-
-<script defer src="js/script.js" type="c49fa29998fb39eab42cbeb6-text/javascript"></script>
-<script defer src="js/styleswitcher.js" type="c49fa29998fb39eab42cbeb6-text/javascript"></script>
-<script defer src="js/discord.js" type="c49fa29998fb39eab42cbeb6-text/javascript"></script>
-<script defer src="js/svgxuse.min.js" type="c49fa29998fb39eab42cbeb6-text/javascript"></script>
-<script src="cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="c49fa29998fb39eab42cbeb6-|49" defer=""></script></body>
+    fetchProjects();
+  </script>
+</body>
 </html>
+
